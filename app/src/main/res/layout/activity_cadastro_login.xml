@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFFFF"
+    android:backgroundTint="#FFFFFFFF"
+    android:orientation="vertical"
+    tools:context=".view.CadastroLogin">
+
+    <ImageView
+        android:id="@+id/imagem_pessoas"
+        android:layout_width="360dp"
+        android:layout_height="285dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="76dp"
+        app:srcCompat="@drawable/pessoas" />
+
+    <TextView
+        android:id="@+id/texto_bemvindo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="39dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Bem-vindo(a) ao Mobisi"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="23sp" />
+
+    <TextView
+        android:id="@+id/texto_apresentacao"
+        android:layout_width="347dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/poppins"
+        android:gravity="center"
+        android:text="Mobisi é uma empresa dedicada à acessibilidade, oferecendo equipamentos para pessoas com necessidades especiais"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="280dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="86dp"
+        android:backgroundTint="@color/dark_blue"
+        android:fontFamily="@font/poppins_extrabold"
+        android:onClick="Logar"
+        android:text="Login"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        app:cornerRadius="20dp" />
+
+
+    <Button
+        android:id="@+id/btn_cadastro"
+        android:layout_width="280dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:backgroundTint="@color/white"
+        android:fontFamily="@font/poppins_extrabold"
+        android:onClick="Cadastrar"
+        android:text="Cadastro"
+        android:textAllCaps="false"
+        android:textColor="@color/dark_blue"
+        android:textSize="14dp"
+        app:cornerRadius="20dp"
+        app:strokeColor="@color/dark_blue"
+        app:strokeWidth="1dp" />
+</LinearLayout>
