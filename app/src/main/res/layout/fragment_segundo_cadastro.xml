@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="25dp"
-        android:fontFamily="@font/poppins"
+        android:fontFamily="@font/poppins_2"
         android:text="Só mais alguns dados"
         android:textColor="@color/gray"
         android:textSize="15sp" />
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/poppins"
+        android:fontFamily="@font/poppins_2"
         android:text="Telefone"
         android:textColor="@color/gray"
         android:textSize="15sp" />
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/poppins"
+        android:fontFamily="@font/poppins_2"
         android:text="CPF"
         android:textColor="@color/gray"
         android:textSize="15sp" />
@@ -121,7 +121,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/poppins"
+        android:fontFamily="@font/poppins_2"
         android:text="CEP"
         android:textColor="@color/gray"
         android:textSize="15sp" />

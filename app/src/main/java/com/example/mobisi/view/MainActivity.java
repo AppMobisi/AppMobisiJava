@@ -42,21 +42,21 @@ public class MainActivity extends AppCompatActivity {
 
     public void carregarTela(boolean logado){
         Intent intent;
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        boolean internet = networkInfo != null;
+
         if (logado) {
-            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-
-            if (networkInfo == null){
-                intent = new Intent(this, teste.class);
-            }
-            else {
-                intent = new Intent(this, webHome.class);
-            }
-        }
-        else {
+            intent = new Intent(this, webHome.class);
+        }else if(!internet){
+            intent = new Intent(this, noInternet.class);
+        } else{
             intent = new Intent(this, CadastroLogin.class);
-
         }
+
+        Bundle temInternet = new Bundle();
+        temInternet.putBoolean("Internet", internet);
+        intent.putExtras(temInternet);
         startActivity(intent);
     }
 }
