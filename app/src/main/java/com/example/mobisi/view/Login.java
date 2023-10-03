@@ -36,6 +36,12 @@ public class Login extends AppCompatActivity {
         }
         else {
            //chama api;
+            boolean internet = sql.verificarLogin();
+            Intent intent = new Intent(this, webHome.class);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("Internet", internet);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     }
 }

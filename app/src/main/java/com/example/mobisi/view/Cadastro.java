@@ -19,6 +19,8 @@ import com.example.mobisi.model.Endereco;
 import com.example.mobisi.model.Usuario;
 import com.example.mobisi.model.ViaCep;
 
+
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,7 +56,11 @@ public class Cadastro extends AppCompatActivity {
         //Coloca usu no banco local
         boolean salvou = sql.salvar(usuario);
         if (salvou){
+            boolean internet = sql.verificarLogin();
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("Internet", internet);
             Intent intent = new Intent(this, webHome.class);
+            intent.putExtras(bundle);
             startActivity(intent);
             finish();
         }
