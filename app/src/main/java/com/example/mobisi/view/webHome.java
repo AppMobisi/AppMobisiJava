@@ -48,7 +48,10 @@ public class webHome extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     handleImageClick((ImageView) v);
+                    abrir(((ImageView) v).getContentDescription().toString());
                 }
+
+
             });
         }
     }

@@ -58,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:contentDescription="htttps://mobisirender/home"
+                android:contentDescription="https://mobisiweb.onrender.com/"
                 android:onClick="abrir"
                 app:srcCompat="@drawable/home_azul" />
 
@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:clickable="true"
-                android:contentDescription="htttps://mobisirender/favoritos"
+                android:contentDescription="https://mobisiweb.onrender.com/central-favoritos"
                 android:onClick="abrir"
                 app:srcCompat="@drawable/estrela_cinza" />
         </LinearLayout>
