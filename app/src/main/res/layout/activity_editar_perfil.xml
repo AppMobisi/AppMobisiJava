@@ -1,32 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.segundo_cadastro">
+    tools:context=".view.editarPerfil">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/light_blue"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:onClick="voltar"
+            android:src="@drawable/voltar_anuncio" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="50dp"
+            android:layout_weight="5"
+            android:fontFamily="@font/poppins_extrabold"
+            android:text="Editar Perfil"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/quase_la"
+        android:id="@+id/cadastroLabel_Nome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="25dp"
-        android:fontFamily="@font/poppins_semibold"
-        android:text="Quase lá..."
-        android:textColor="@color/black"
-        android:textSize="30sp" />
-
-    <TextView
-        android:id="@+id/dica_cadastro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/poppins_2"
-        android:text="Só mais alguns dados"
+        android:text="Nome"
         android:textColor="@color/gray"
         android:textSize="15sp" />
+
+    <LinearLayout
+        android:id="@+id/cadastroLayout_Nome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/inputs"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:src="@drawable/icone_nome" />
+
+        <EditText
+            android:id="@+id/NomeAtualizar"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@color/nula"
+            android:ems="10"
+            android:hint="Digite seu nome"
+            android:inputType="textPersonName"
+            android:maxLength="50"
+            android:singleLine="false"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/cadastroLabel_Email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/poppins_2"
+        android:text="Emal"
+        android:textColor="@color/gray"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:id="@+id/cadastroLayout_Email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/inputs"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:src="@drawable/icone_email" />
+
+        <EditText
+            android:id="@+id/EmailAtualizar"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@color/nula"
+            android:ems="10"
+            android:hint="Digite seu email"
+            android:inputType="textWebEmailAddress"
+            android:singleLine="false"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/cadastroLabel_Telefone"
@@ -158,5 +256,20 @@
 
     </LinearLayout>
 
+
+    <Button
+        android:id="@+id/ataulizar"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/light_blue"
+        android:fontFamily="@font/poppins_bold"
+        android:onClick="verifica"
+        android:text="Atualizar"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        app:cornerRadius="20dp" />
 
 </LinearLayout>

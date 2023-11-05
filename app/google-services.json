@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "487824893313",
+    "project_id": "mobisi-c3c76",
+    "storage_bucket": "mobisi-c3c76.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:487824893313:android:7820a431cae66f90f57480",
+        "android_client_info": {
+          "package_name": "com.example.mobi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmx1plPbCd_oelDwDmQkclhRnMf0FJ_To"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:487824893313:android:3e53384a39826824f57480",
+        "android_client_info": {
+          "package_name": "com.example.mobisi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmx1plPbCd_oelDwDmQkclhRnMf0FJ_To"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

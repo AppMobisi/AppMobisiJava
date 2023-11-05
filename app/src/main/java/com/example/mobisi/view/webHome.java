@@ -2,8 +2,9 @@ package com.example.mobisi.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
@@ -11,14 +12,23 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mobisi.R;
+import com.example.mobisi.SqlLite.SqlLiteConnection;
+import com.example.mobisi.model.Usuario;
 
+import java.io.InterruptedIOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class webHome extends AppCompatActivity {
 
     private final Map<Integer, ImagePair> imagePairs = new HashMap<>();
+    private SqlLiteConnection sql;
+    private ImageView fotoPerfil;
+    private ImageView semFoto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -32,15 +42,18 @@ public class webHome extends AppCompatActivity {
                 redireciona = "perfil";
             }
         }
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_home);
         abrirTela(redireciona);
 
-
+        sql = new SqlLiteConnection(this);
         imagePairs.put(R.id.home_azul, new ImagePair(R.drawable.home_azul, R.drawable.home_cinza));
         imagePairs.put(R.id.anuncio_cinza, new ImagePair(R.drawable.anuncio_azul, R.drawable.anuncio_cinza));
         imagePairs.put(R.id.estabelecimento_cinza, new ImagePair(R.drawable.estabelecimento_azul, R.drawable.estabelecimento_cinza));
-        imagePairs.put(R.id.estrela_cinza, new ImagePair(R.drawable.estrela_azul, R.drawable.estrela_cinza));
+        imagePairs.put(R.id.anunciar_cinza, new ImagePair(R.drawable.anunciar_azul, R.drawable.anunciar_cinza));
 
         for (Integer id : imagePairs.keySet()) {
             ImageView imageView = findViewById(id);
@@ -48,11 +61,28 @@ public class webHome extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     handleImageClick((ImageView) v);
-                    abrir(((ImageView) v).getContentDescription().toString());
+                    abrirTela(((ImageView) v).getContentDescription().toString());
                 }
 
 
             });
+        }
+
+        fotoPerfil = findViewById(R.id.perfil_foto);
+        semFoto = findViewById(R.id.perfil);
+
+        Usuario usuario =  sql.getInfos();
+        if (usuario.getcFoto() != null){
+            fotoPerfil.setImageResource(R.drawable.foto_perfil_home);
+            Uri foto = Uri.parse(usuario.getcFoto());
+            Glide.with(this)
+                    .load(foto)
+                    .centerCrop()
+                    .into(fotoPerfil);
+
+            fotoPerfil.setVisibility(View.VISIBLE);
+            semFoto.setVisibility(View.GONE);
+
         }
     }
     private void handleImageClick(ImageView clickedImage) {
@@ -74,7 +104,7 @@ public class webHome extends AppCompatActivity {
        if (descricao.contains("http")){
            abrir(descricao);
        }else{
-           abrir_off(descricao);
+           abrir_off();
        }
     }
 
@@ -97,13 +127,15 @@ public class webHome extends AppCompatActivity {
         safari.loadUrl(url);
     }
 
-    public void abrir_off(String nomeTela){
-        if (nomeTela == "perfil"){
-            //chama fragment perfil
-        }
-        else {
-            //anuncio
-        }
+    public void abrir_off(){
+        Intent intent = new Intent(this, Anuncio.class);
+        startActivity(intent);
+
+    }
+
+    public void abrirPerfil(View view) {
+        Intent intent = new Intent(this, Perfil.class);
+        startActivity(intent);
     }
 
     private static class ImagePair {

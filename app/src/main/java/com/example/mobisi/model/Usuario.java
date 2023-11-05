@@ -1,6 +1,7 @@
 package com.example.mobisi.model;
 
 public class Usuario {
+    private Integer id;
     private String cNome;
     private String cSenha;
     private String cEmail;
@@ -10,12 +11,14 @@ public class Usuario {
     private String cRua;
     private String cEstado;
     private String cCidade;
+    private String cFoto;
 
     public Usuario(){
 
     }
 
-    public Usuario(String cNome, String cSenha, String cEmail, String cTelefone, String cCpf, String cCep, String cRua, String cEstado, String cCidade) {
+    public Usuario(Integer id, String cNome, String cSenha, String cEmail, String cTelefone, String cCpf, String cCep, String cRua, String cEstado, String cCidade, String cFoto) {
+        this.id = id;
         this.cNome = cNome;
         this.cSenha = cSenha;
         this.cEmail = cEmail;
@@ -25,6 +28,23 @@ public class Usuario {
         this.cRua = cRua;
         this.cEstado = cEstado;
         this.cCidade = cCidade;
+        this.cFoto = cFoto;
+    }
+
+    public String getcFoto() {
+        return cFoto;
+    }
+
+    public void setcFoto(String cFoto) {
+        this.cFoto = cFoto;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getcNome() {

@@ -2,4 +2,17 @@
     <string name="app_name">Mobisi</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="categorias">
+        <item>Selecione um Tipo de Deficiência</item>
+        <item>Categoria 1</item>
+        <item>Categoria 2</item>
+        <item>Categoria 3</item>
+    </string-array>
+
+    <string-array name="cartoes">
+        <item>Selecione um tipo de cartão</item>
+        <item>Crédito</item>
+        <item>Débito</item>
+    </string-array>
 </resources>

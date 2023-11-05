@@ -5,12 +5,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mobisi.R;
@@ -75,8 +72,8 @@ public class Cadastro extends AppCompatActivity {
     }
 
     public void verficarPrimeira() {
-        String nome = ((EditText) findViewById(R.id.cadastro_nome)).getText().toString();
-        String email = ((EditText) findViewById(R.id.cadastro_email)).getText().toString();
+        String nome = ((EditText) findViewById(R.id.NomeAtualizar)).getText().toString();
+        String email = ((EditText) findViewById(R.id.EmailAtualizar)).getText().toString();
         String senha = ((EditText) findViewById(R.id.cadastro_senha2)).getText().toString();
 
         if (nome.isEmpty() || email.isEmpty() || senha.isEmpty()){
@@ -89,9 +86,9 @@ public class Cadastro extends AppCompatActivity {
     }
 
     public void verificarSegunda(){
-        String telefone = ((EditText) findViewById(R.id.cadastro_telefone)).getText().toString();
-        String cpf = ((EditText) findViewById(R.id.cadastro_cpf)).getText().toString();
-        String cep = ((EditText) findViewById(R.id.cadastro_cep)).getText().toString();
+        String telefone = ((EditText) findViewById(R.id.TelefoneAtualizar)).getText().toString();
+        String cpf = ((EditText) findViewById(R.id.CpfAtualizar)).getText().toString();
+        String cep = ((EditText) findViewById(R.id.CepAtualizar)).getText().toString();
 
         if(telefone.isEmpty() || cpf.isEmpty() || cep.isEmpty()){
            showToast("Todos os campos são obrigatórios");
@@ -102,7 +99,7 @@ public class Cadastro extends AppCompatActivity {
         }
     }
     public void VerificaCep(){
-        String[] inputCep = ((EditText) findViewById(R.id.cadastro_cep)).getText().toString().split("-");
+        String[] inputCep = ((EditText) findViewById(R.id.CepAtualizar)).getText().toString().split("-");
         String cep = "";
         for (String numeros : inputCep){
             cep = cep + numeros;
@@ -145,8 +142,8 @@ public class Cadastro extends AppCompatActivity {
 
     public void continuarAposVerifica(boolean verifica){
         if (verifica){
-            String telefone = ((EditText) findViewById(R.id.cadastro_telefone)).getText().toString();
-            String cpf = ((EditText) findViewById(R.id.cadastro_cpf)).getText().toString();
+            String telefone = ((EditText) findViewById(R.id.TelefoneAtualizar)).getText().toString();
+            String cpf = ((EditText) findViewById(R.id.CpfAtualizar)).getText().toString();
 
             usuario.setcCep(endereco.cep);
             usuario.setcCidade(endereco.localidade);
