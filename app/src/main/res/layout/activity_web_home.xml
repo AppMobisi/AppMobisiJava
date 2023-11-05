@@ -58,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:contentDescription="htttps://mobisirender/home"
+                android:contentDescription="https://mobisiweb.onrender.com/"
                 android:onClick="abrir"
                 app:srcCompat="@drawable/home_azul" />
 
@@ -76,6 +76,7 @@
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:contentDescription="perfil"
                 android:orientation="horizontal"></LinearLayout>
 
             <ImageView
@@ -88,27 +89,46 @@
                 app:srcCompat="@drawable/estabelecimento_cinza" />
 
             <ImageView
-                android:id="@+id/estrela_cinza"
+                android:id="@+id/anunciar_cinza"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:clickable="true"
-                android:contentDescription="htttps://mobisirender/favoritos"
+                android:contentDescription="anuncio"
                 android:onClick="abrir"
-                app:srcCompat="@drawable/estrela_cinza" />
+                app:srcCompat="@drawable/anunciar_cinza" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageView
-        android:id="@+id/perfil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:contentDescription="perfil"
-        android:foregroundGravity="center"
+
+
+    <FrameLayout
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/foto_perfil_home"
         app:layout_constraintBottom_toBottomOf="@+id/webView"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/user_image" />
+        android:layout_marginBottom="40dp"
+        android:contentDescription="perfil"
+        android:onClick="abrirPerfil"
+        android:clickable="true"
+        >
 
+        <ImageView
+            android:id="@+id/perfil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:srcCompat="@drawable/perfil_home" />
+
+        <ImageView
+            android:id="@+id/perfil_foto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/foto_perfil_home"/>
+
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

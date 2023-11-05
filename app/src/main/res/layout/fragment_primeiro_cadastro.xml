@@ -59,7 +59,7 @@
             android:src="@drawable/icone_nome" />
 
         <EditText
-            android:id="@+id/cadastro_nome"
+            android:id="@+id/NomeAtualizar"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
@@ -104,7 +104,7 @@
             android:src="@drawable/icone_email" />
 
         <EditText
-            android:id="@+id/cadastro_email"
+            android:id="@+id/EmailAtualizar"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"

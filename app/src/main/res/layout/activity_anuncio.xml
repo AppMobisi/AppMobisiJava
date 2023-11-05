@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_blue"
+    android:backgroundTint="@color/light_blue"
+    tools:context=".view.Anuncio">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
+        android:background="@color/white"
+        android:backgroundTint="@color/white"
+        android:orientation="vertical"
+        tools:context=".view.Anuncio">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/light_blue"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:onClick="voltar"
+                android:src="@drawable/voltar_anuncio" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="50dp"
+                android:layout_weight="5"
+                android:fontFamily="@font/poppins_extrabold"
+                android:text="Criar Anúncio"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/image_container"
+            android:layout_width="362dp"
+            android:layout_height="183dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/dotted_bar"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/selected_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:visibility="gone" /> <!-- Usando centerCrop para manter o aspecto -->
+
+            <ImageView
+                android:id="@+id/add_image_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/camera" />
+
+            <TextView
+                android:id="@+id/incluir_foto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_extrabold"
+                android:text="Incluir foto"
+                android:textColor="@color/light_blue" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/anuncioLabel_Titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppins_2"
+            android:text="Título do anúncio"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:id="@+id/anuncio_InputTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/inputs"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+            <EditText
+                android:id="@+id/anuncio_EditTitulo"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@color/nula"
+                android:ems="10"
+                android:hint="Qual o título do seu anúncio?"
+                android:inputType="textPersonName"
+                android:maxLength="50"
+                android:singleLine="false"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/anuncioLabel_Descricao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppins_2"
+            android:text="Descrição"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:id="@+id/anuncio_InputDescricao"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/inputs"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/anuncio_EditDescricao"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@color/nula"
+                android:ems="10"
+                android:hint="Descreva o Anúncio..."
+                android:inputType="text"
+                android:singleLine="false"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/anuncioLabel_Preco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppins_2"
+            android:text="Preço"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:id="@+id/anuncio_InputPreco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/inputs"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/anuncio_EditPreco"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@color/nula"
+                android:ems="10"
+                android:hint="Qual o preço do seu anúncio?"
+                android:inputType="numberDecimal"
+                android:maxLength="50"
+                android:singleLine="false"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/anuncioLabel_Categoria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppins_2"
+            android:text="Tipo de Deficiência"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <Spinner
+            android:id="@+id/anuncio_SpinnerCategoria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/inputs"
+            android:entries="@array/categorias"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp"
+            android:textColor="@color/black" />
+
+
+        <Button
+            android:id="@+id/anunciar"
+            android:layout_width="362dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="45dp"
+            android:layout_marginBottom="15dp"
+            android:backgroundTint="@color/light_blue"
+            android:fontFamily="@font/poppins_bold"
+            android:onClick="anunciar"
+            android:text="Anunciar"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            app:cornerRadius="10dp" />
+    </LinearLayout>
+</ScrollView>

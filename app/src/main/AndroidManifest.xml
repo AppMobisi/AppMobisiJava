@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +16,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mobisi"
         tools:targetApi="31">
+        <activity
+            android:name=".view.MeusAnuncios"
+            android:exported="false" />
+        <activity
+            android:name=".view.editarPerfil"
+            android:exported="false" />
+        <activity
+            android:name=".view.Perfil"
+            android:exported="false" />
+        <activity
+            android:name=".view.certoAnuncio"
+            android:exported="false" />
+        <activity
+            android:name=".view.ProcessandoPagamento"
+            android:exported="false" />
+        <activity
+            android:name=".view.pagamentoAnuncio"
+            android:exported="false" />
+        <activity
+            android:name=".view.Anuncio"
+            android:exported="false" />
         <activity
             android:name=".view.noInternet"
             android:exported="false" />
@@ -42,10 +65,19 @@
             </intent-filter>
         </activity>
 
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.mobisi.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>
