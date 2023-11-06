@@ -12,6 +12,7 @@ public class Usuario {
     private String cEstado;
     private String cCidade;
     private String cFoto;
+    private Integer iTipoDeficiencia;
 
     public Usuario(){
 
@@ -29,6 +30,14 @@ public class Usuario {
         this.cEstado = cEstado;
         this.cCidade = cCidade;
         this.cFoto = cFoto;
+    }
+
+    public Integer getiTipoDeficiencia() {
+        return iTipoDeficiencia;
+    }
+
+    public void setiTipoDeficiencia(Integer iTipoDeficiencia) {
+        this.iTipoDeficiencia = iTipoDeficiencia;
     }
 
     public String getcFoto() {

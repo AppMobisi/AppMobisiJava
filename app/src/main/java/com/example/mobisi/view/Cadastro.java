@@ -6,14 +6,20 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mobisi.R;
 import com.example.mobisi.SqlLite.SqlLiteConnection;
 import com.example.mobisi.model.Endereco;
+import com.example.mobisi.model.SingUp;
+import com.example.mobisi.model.SingUpResponse;
 import com.example.mobisi.model.Usuario;
+import com.example.mobisi.model.UsuarioDto;
 import com.example.mobisi.model.ViaCep;
 
 
@@ -49,7 +55,35 @@ public class Cadastro extends AppCompatActivity {
 
     public void cadastrar(){
         //Chama api
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://apipostgres.onrender.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
+        SingUp service = retrofit.create(SingUp.class);
+        UsuarioDto post = new UsuarioDto(usuario);
+        Call<SingUpResponse> singUpResponseCall = service.signUp(post);
+        singUpResponseCall.enqueue(new Callback<SingUpResponse>() {
+            @Override
+            public void onResponse(Call<SingUpResponse> call, Response<SingUpResponse> response) {
+                if(response.isSuccessful()){
+                    SingUpResponse singUpResponse = response.body();
+                    usuario.setId(singUpResponse.getData().getId());
+                    salvarSqlLIte();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SingUpResponse> call, Throwable t) {
+                Toast.makeText(Cadastro.this,"Erro ao chamar api", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+    }
+
+    public void salvarSqlLIte(){
         //Coloca usu no banco local
         boolean salvou = sql.salvar(usuario);
         if (salvou){
@@ -62,6 +96,7 @@ public class Cadastro extends AppCompatActivity {
             finish();
         }
     }
+
     public void chamarVerifica(View view){
         String botao = ((Button) findViewById(R.id.cadastrar)).getText().toString();
         if (botao.equals("Continuar")) {
@@ -154,6 +189,7 @@ public class Cadastro extends AppCompatActivity {
 
             System.out.println(usuario);
             cadastrar();
+
         }
     }
 
@@ -171,7 +207,7 @@ public class Cadastro extends AppCompatActivity {
     }
 
     public void chamaFragment(String decisao){
-        if (decisao == "continua") {
+        if(decisao == "continua") {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.container, sc);
             transaction.commit();
@@ -230,5 +266,9 @@ public class Cadastro extends AppCompatActivity {
         if (d2 > 9) d2 = 0;
 
         return d1 == Character.getNumericValue(cpf.charAt(9)) && d2 == Character.getNumericValue(cpf.charAt(10));
+    }
+
+    public void setiTipoDeficiencia(int iTipoDeficiencia) {
+        usuario.setiTipoDeficiencia(iTipoDeficiencia);
     }
 }

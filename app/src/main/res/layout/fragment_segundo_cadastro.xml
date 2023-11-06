@@ -158,5 +158,30 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/cadastroLabel_iTipoDeficiencia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/poppins_2"
+        android:text="Tipo Deficiência"
+        android:textColor="@color/gray"
+        android:textSize="15sp" />
+
+    <Spinner
+        android:id="@+id/cadastro_SpinnerCategoria"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/inputs"
+        android:entries="@array/deficiencias"
+        android:paddingLeft="20dp"
+        android:paddingTop="5dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="5dp"
+        android:textColor="@color/black" />
+
 
 </LinearLayout>
