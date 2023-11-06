@@ -15,4 +15,12 @@
         <item>Crédito</item>
         <item>Débito</item>
     </string-array>
+
+    <string-array name="deficiencias">
+        <item>Selecione um Tipo de Deficiência</item>
+        <item>Não tenho nenhum tipo de deficiência</item>
+        <item>Categoria 1</item>
+        <item>Categoria 2</item>
+        <item>Categoria 3</item>
+    </string-array>
 </resources>

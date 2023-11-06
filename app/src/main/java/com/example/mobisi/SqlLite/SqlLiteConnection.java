@@ -29,7 +29,8 @@ public class SqlLiteConnection extends SQLiteOpenHelper {
                 ", cRua VARCHAR"+
                 ", cEstado VARCHAR"+
                 ", cCidade VARCHAR" +
-                ", cFoto VARHCAR)"
+                ", cFoto VARHCAR" +
+                ", iTipoDeficiencia INT)"
         );
 
 
@@ -49,7 +50,9 @@ public class SqlLiteConnection extends SQLiteOpenHelper {
                 ", cCpf VARCHAR"+
                 ", cRua VARCHAR"+
                 ", cEstado VARCHAR"+
-                ", cCidade VARCHAR)"
+                ", cCidade VARCHAR" +
+                ", cFoto VARCHAR" +
+                ", iTipoDeficiencia INT)"
         );
     }
 
@@ -73,6 +76,7 @@ public class SqlLiteConnection extends SQLiteOpenHelper {
 
         try {
             ContentValues valores = new ContentValues();
+            valores.put("iId", usuario.getId());
             valores.put("cNome", usuario.getcNome());
             valores.put("cSenha", usuario.getcSenha());
             valores.put("cTelefone", usuario.getcTelefone());
@@ -82,6 +86,7 @@ public class SqlLiteConnection extends SQLiteOpenHelper {
             valores.put("cRua", usuario.getcRua());
             valores.put("cEstado", usuario.getcEstado());
             valores.put("cCidade", usuario.getcCidade());
+            valores.put("iTipoDeficiencia", usuario.getiTipoDeficiencia());
 
             long id = db.insert("Usuario", null, valores);
             return true;
@@ -109,6 +114,7 @@ public class SqlLiteConnection extends SQLiteOpenHelper {
                 usuario.setcEstado(cursor.getString(8));
                 usuario.setcCidade(cursor.getString(9));
                 usuario.setcFoto(cursor.getString(10));
+                usuario.setiTipoDeficiencia(cursor.getInt(11));
             }
             return usuario;
     }
