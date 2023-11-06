@@ -142,4 +142,9 @@ public class SqlLiteConnection extends SQLiteOpenHelper {
         int linhas = db.update("Usuario", values, null, null);
         return linhas;
     }
+
+    public void logout(){
+       SQLiteDatabase db = getWritableDatabase();
+       db.delete("Usuario", null, null);
+    }
 }

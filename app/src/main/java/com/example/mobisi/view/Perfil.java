@@ -10,6 +10,7 @@ import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -30,6 +31,7 @@ import com.example.mobisi.SqlLite.SqlLiteConnection;
 import com.example.mobisi.firebase.Firebase;
 import com.example.mobisi.model.Anuncios;
 import com.example.mobisi.model.AnunciosFavoritos;
+import com.example.mobisi.model.EstabelecimentoFavoritos;
 import com.example.mobisi.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -219,10 +221,42 @@ public class Perfil extends AppCompatActivity {
 
 
     public void anunciosFavoritos(View view) {
+        Intent intent = new Intent(this, anunciosFavoritos.class);
+        startActivity(intent);
     }
 
     public void meusAnuncios(View view) {
         Intent intent = new Intent(this, MeusAnuncios.class);
         startActivity(intent);
+    }
+
+    public void estabelecimentosFavoritos(View view){
+        Intent intent = new Intent(this, estabelecimentoFavorito.class);
+        startActivity(intent);
+    }
+
+
+    public void sair(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Sair da conta");
+        builder.setMessage("Tem certeza de que deseja sair da sua conta?");
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                sql.logout();
+                Intent intent = new Intent(Perfil.this, CadastroLogin.class);
+                startActivity(intent);
+            }
+        });
+
+        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog alerta = builder.create();
+        alerta.show();
     }
 }

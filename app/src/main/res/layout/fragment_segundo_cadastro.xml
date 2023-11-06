@@ -106,7 +106,7 @@
             android:layout_weight="1"
             android:background="@color/nula"
             android:ems="10"
-            android:hint="Digit seu CPF"
+            android:hint="Digite seu CPF"
             android:inputType="number"
             android:maxLength="11"
             android:singleLine="false"

@@ -57,12 +57,13 @@ public class MeusAnuncios extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     QuerySnapshot querySnapshot = task.getResult();
                     for (QueryDocumentSnapshot document : querySnapshot) {
+                        String documentoId = document.getId();
                         String tituloAnuncio = document.getString("cTitulo");
                         Double preco = document.getDouble("nPreco");
                         String foto = document.getString("cFoto");
 
                         if (tituloAnuncio != null && preco != null && foto != null) {
-                            AnunciosFavoritos anuncio = new AnunciosFavoritos(tituloAnuncio, preco, foto, usuario.getcNome());
+                            AnunciosFavoritos anuncio = new AnunciosFavoritos(documentoId,tituloAnuncio, preco, foto, usuario.getcNome());
                             meusAnuncios.add(anuncio);
                         }
                     }
