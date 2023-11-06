@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".view.Perfil">
 
@@ -29,7 +30,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="70dp"
-            android:layout_marginRight="50dp"
             android:layout_weight="5"
             android:fontFamily="@font/poppins_extrabold"
             android:text="Perfil"
@@ -45,6 +45,17 @@
             android:clickable="true"
             android:onClick="editar"
             android:src="@drawable/editar" />
+
+        <ImageView
+            android:id="@+id/sair"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:onClick="sair"
+            app:srcCompat="@drawable/logout" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -307,35 +318,14 @@
                 android:layout_weight="1"
                 android:src="@drawable/setinha_ir" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@drawable/atividades_inputs"
+            android:clickable="true"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingLeft="15dp">
-
-            <TextView
-                android:id="@+id/textView20"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:fontFamily="@font/poppins_medium"
-                android:text="Minhas avaliações"
-                android:textColor="@color/black" />
-
-            <ImageView
-                android:id="@+id/imageView14"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/setinha_ir" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/atividades_inputs"
-            android:gravity="center"
+            android:onClick="estabelecimentosFavoritos"
             android:orientation="horizontal"
             android:paddingLeft="15dp">
 

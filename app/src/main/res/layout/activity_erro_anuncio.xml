@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".view.ErroAnuncio">
@@ -32,13 +33,13 @@
         android:layout_marginTop="75dp"
         android:layout_marginBottom="15dp"
         android:backgroundTint="@color/light_blue"
+        android:contentDescription="dnv"
         android:fontFamily="@font/poppins_bold"
         android:onClick="redireciona"
         android:text="Tentar novamente"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="18dp"
-        android:contentDescription="dnv"
         app:cornerRadius="10dp" />
 
     <Button
@@ -47,9 +48,9 @@
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
-        android:contentDescription="home"
         android:layout_marginBottom="15dp"
         android:backgroundTint="@color/light_blue"
+        android:contentDescription="home"
         android:fontFamily="@font/poppins_bold"
         android:onClick="redireciona"
         android:text="Home"

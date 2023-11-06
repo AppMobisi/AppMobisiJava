@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".view.MeusAnuncios">
 
@@ -12,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/light_blue"
-        android:gravity="center"
         android:orientation="horizontal"
+        android:gravity="center"
         android:padding="10dp">
 
         <ImageView
@@ -29,10 +28,10 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="50dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="5"
             android:fontFamily="@font/poppins_extrabold"
-            android:text="Meus Anúncios"
+            android:text="Estabelecimentos Favoritos"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="16sp" />
@@ -53,7 +52,7 @@
         android:layout_gravity="center"
         android:fontFamily="@font/poppins_bold"
         android:gravity="center"
-        android:text=":( Nos parece que você não tem nenhum anúncio..."
+        android:text="Parece que você não tem nenhum estabelecimento favoritado"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:visibility="gone" />
