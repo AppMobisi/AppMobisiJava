@@ -13,6 +13,7 @@
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:clickable="true"
-                android:contentDescription="anuncio"
+                android:contentDescription="https://mobisiweb.onrender.com/produtos"
                 android:onClick="abrir"
                 app:srcCompat="@drawable/anuncio_cinza" />
 
@@ -84,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:contentDescription="htttps://mobisirender/estabelecimento"
+                android:contentDescription="https://mobisiweb.onrender.com/estabelecimentos/"
                 android:onClick="abrir"
                 app:srcCompat="@drawable/estabelecimento_cinza" />
 

@@ -32,6 +32,20 @@ public class Usuario {
         this.cFoto = cFoto;
     }
 
+    public Usuario(UsuarioResponseDto usuarioResponseDto){
+        this.id = usuarioResponseDto.id;
+        this.cNome = usuarioResponseDto.name;
+        this.cSenha = usuarioResponseDto.password;
+        this.cEmail = usuarioResponseDto.email;
+        this.cTelefone = usuarioResponseDto.phone;
+        this.cCpf = usuarioResponseDto.cpf;
+        this.cCep = usuarioResponseDto.cep;
+        this.cRua = usuarioResponseDto.neighborhood;
+        this.cEstado = usuarioResponseDto.state;
+        this.cCidade = usuarioResponseDto.city;
+        this.iTipoDeficiencia = usuarioResponseDto.disabilityType;
+    }
+
     public Integer getiTipoDeficiencia() {
         return iTipoDeficiencia;
     }

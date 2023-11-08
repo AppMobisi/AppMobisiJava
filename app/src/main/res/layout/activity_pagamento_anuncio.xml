@@ -51,10 +51,12 @@
 
     <Spinner
         android:id="@+id/pagamento_categoria"
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/inputs"
         android:entries="@array/cartoes"
         android:paddingLeft="20dp"
@@ -76,9 +78,11 @@
 
     <LinearLayout
         android:id="@+id/nrm_cartaoInput"
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/inputs"
         android:gravity="center"
         android:orientation="horizontal">
@@ -101,10 +105,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="15dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -201,8 +207,9 @@
         android:id="@+id/nomeTitularText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="15dp"
         android:fontFamily="@font/poppins_2"
         android:text="Nome Titular"
         android:textColor="@color/black"
@@ -210,9 +217,11 @@
 
     <LinearLayout
         android:id="@+id/nomeTitularInput"
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/inputs"
         android:gravity="center"
         android:orientation="horizontal">
@@ -247,9 +256,11 @@
 
     <LinearLayout
         android:id="@+id/CpfCnpjInput"
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/inputs"
         android:gravity="center"
         android:orientation="horizontal">
@@ -273,10 +284,12 @@
 
     <Button
         android:id="@+id/pagar"
-        android:layout_width="362dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="center"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="25dp"
+        android:layout_marginRight="15dp"
         android:layout_marginBottom="15dp"
         android:backgroundTint="@color/light_blue"
         android:fontFamily="@font/poppins_bold"

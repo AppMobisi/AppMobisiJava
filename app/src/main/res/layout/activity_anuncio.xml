@@ -98,9 +98,11 @@
 
         <LinearLayout
             android:id="@+id/anuncio_InputTitulo"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:background="@drawable/inputs"
             android:gravity="center"
             android:orientation="horizontal">
@@ -136,9 +138,11 @@
 
         <LinearLayout
             android:id="@+id/anuncio_InputDescricao"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:background="@drawable/inputs"
             android:orientation="horizontal">
 
@@ -172,9 +176,11 @@
 
         <LinearLayout
             android:id="@+id/anuncio_InputPreco"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:background="@drawable/inputs"
             android:gravity="center"
             android:orientation="horizontal">
@@ -209,10 +215,12 @@
 
         <Spinner
             android:id="@+id/anuncio_SpinnerCategoria"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="25dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="25dp"
             android:background="@drawable/inputs"
             android:entries="@array/categorias"
             android:paddingLeft="20dp"
@@ -224,10 +232,12 @@
 
         <Button
             android:id="@+id/anunciar"
-            android:layout_width="362dp"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_gravity="center"
+            android:layout_marginLeft="25dp"
             android:layout_marginTop="45dp"
+            android:layout_marginRight="25dp"
             android:layout_marginBottom="15dp"
             android:backgroundTint="@color/light_blue"
             android:fontFamily="@font/poppins_bold"

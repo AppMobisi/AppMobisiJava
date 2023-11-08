@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -257,9 +258,29 @@ public class Anuncio extends AppCompatActivity {
 
 
     public void salvarAnuncioFirebase(Bundle bundle) {
-        Intent intent = new Intent(this, pagamentoAnuncio.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Preço da anúncio");
+        builder.setTitle("Para prosseguir você precisa pagar uma pequena taxa de R$5,00");
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(Anuncio.this, pagamentoAnuncio.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
+        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+
     }
 
 

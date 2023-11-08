@@ -1,46 +1,33 @@
 package com.example.mobisi.model;
 
-public class UsuarioDto {
+public class UpdateDto {
     private String name;
     private String email;
-    private String password;
-    private String cpf;
     private String phone;
     private String cep;
     private String city;
     private String neighborhood;
     private String state;
-    private int disabilityType;
 
-    public UsuarioDto(){}
-
-    public UsuarioDto( String name, String email, String password, String cpf, String phone, String cep, String city, String neighborhood, String state,  int disabilityType) {
+    public UpdateDto(String name, String email, String phone, String cep, String city, String neighborhood, String state) {
         this.name = name;
         this.email = email;
-        this.password = password;
-        this.cpf = cpf;
         this.phone = phone;
         this.cep = cep;
         this.city = city;
         this.neighborhood = neighborhood;
         this.state = state;
-        this.disabilityType = disabilityType;
     }
 
-    public UsuarioDto(Usuario usuario){
+    public UpdateDto(Usuario usuario){
         this.name = usuario.getcNome();
         this.email = usuario.getcEmail();
-        this.password = usuario.getcSenha();
-        this.cpf = usuario.getcCpf();
         this.phone = usuario.getcTelefone();
         this.cep = usuario.getcCep();
         this.city = usuario.getcCidade();
         this.neighborhood = usuario.getcRua();
         this.state = usuario.getcEstado();
-        this.disabilityType = usuario.getiTipoDeficiencia();
-
     }
-
 
     public String getName() {
         return name;
@@ -56,22 +43,6 @@ public class UsuarioDto {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
     }
 
     public String getPhone() {
@@ -112,14 +83,5 @@ public class UsuarioDto {
 
     public void setState(String state) {
         this.state = state;
-    }
-
-
-    public int getDisabilityType() {
-        return disabilityType;
-    }
-
-    public void setDisabilityType(int disabilityType) {
-        this.disabilityType = disabilityType;
     }
 }

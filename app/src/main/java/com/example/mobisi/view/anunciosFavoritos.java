@@ -19,6 +19,7 @@ import com.example.mobisi.firebase.Firebase;
 import com.example.mobisi.model.AnunciosFavoritos;
 import com.example.mobisi.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -72,10 +73,24 @@ public class anunciosFavoritos extends AppCompatActivity {
                                         String tituloAnuncio = document.getString("cTitulo");
                                         Double preco = document.getDouble("nPreco");
                                         String foto = document.getString("cFoto");
-
+                                        Double iAnuncianteId = document.getDouble("iAnuncianteId");
                                         if (tituloAnuncio != null && preco != null && foto != null) {
-                                            AnunciosFavoritos anuncio = new AnunciosFavoritos(documentoId, tituloAnuncio, preco, foto, usuario.getcNome());
-                                            anunciosFavoritos.add(anuncio);
+
+                                            Query query1 = db.collection("Anunciantes").whereEqualTo("iUsuarioId", iAnuncianteId);
+                                            query1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()){
+                                                        QuerySnapshot querySnapshot1 = task.getResult();
+                                                        for (QueryDocumentSnapshot document1: querySnapshot1){
+                                                            String cNmAnunciante = document1.getString("cNome");
+                                                            AnunciosFavoritos anuncio = new AnunciosFavoritos(documentoId, tituloAnuncio, preco, foto, cNmAnunciante);
+                                                            anunciosFavoritos.add(anuncio);
+                                                        }
+                                                    }
+                                                    chamaLista();
+                                                }
+                                            });
                                         }
                                     }
                                 }

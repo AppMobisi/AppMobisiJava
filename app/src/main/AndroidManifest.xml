@@ -19,6 +19,9 @@
         android:theme="@style/Theme.Mobisi"
         tools:targetApi="31">
         <activity
+            android:name=".view.estabelecimentosErro"
+            android:exported="false" />
+        <activity
             android:name=".view.estabelecimentoFavorito"
             android:exported="false" />
         <activity
@@ -50,9 +53,6 @@
             android:exported="false" />
         <activity
             android:name=".view.webHome"
-            android:exported="false" />
-        <activity
-            android:name=".view.teste"
             android:exported="false" />
         <activity
             android:name=".view.Cadastro"

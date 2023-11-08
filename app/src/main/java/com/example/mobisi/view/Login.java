@@ -10,7 +10,16 @@ import android.widget.Toast;
 
 import com.example.mobisi.R;
 import com.example.mobisi.SqlLite.SqlLiteConnection;
+import com.example.mobisi.model.ApiPostgres;
+import com.example.mobisi.model.AuthResponse;
+import com.example.mobisi.model.SingInDto;
 import com.example.mobisi.model.Usuario;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Login extends AppCompatActivity {
 
@@ -35,13 +44,46 @@ public class Login extends AppCompatActivity {
             Toast.makeText(this, "Todos os campos são obrigatórios", Toast.LENGTH_SHORT).show();
         }
         else {
-           //chama api;
-            boolean internet = sql.verificarLogin();
-            Intent intent = new Intent(this, webHome.class);
-            Bundle bundle = new Bundle();
-            bundle.putBoolean("Internet", internet);
-            intent.putExtras(bundle);
-            startActivity(intent);
+            SingInDto singInDto = new SingInDto(email, senha);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("https://apipostgres.onrender.com/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ApiPostgres service = retrofit.create(ApiPostgres.class);
+            Call<AuthResponse> singInResponseCall = service.singin(singInDto);
+
+            singInResponseCall.enqueue(new Callback<AuthResponse>() {
+                @Override
+                public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                    if (response.isSuccessful()){
+                        AuthResponse authResponse = response.body();
+                        if (authResponse.statusCode == 200) {
+                            Usuario usuario = new Usuario(authResponse.data);
+                            sql.salvar(usuario);
+                            if (sql.verificarLogin()) {
+                                Intent intent = new Intent(Login.this, webHome.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putBoolean("Internet", true);
+                                intent.putExtras(bundle);
+                                startActivity(intent);
+                            }
+                        } else {
+                            Toast.makeText(Login.this, authResponse.message, Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        Toast.makeText(Login.this,"Erro ao chamar api", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AuthResponse> call, Throwable t) {
+                    Toast.makeText(Login.this,"Erro ao chamar api", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
         }
     }
 }

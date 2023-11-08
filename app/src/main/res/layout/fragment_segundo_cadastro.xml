@@ -41,9 +41,11 @@
 
     <LinearLayout
         android:id="@+id/cadastroLayout_Telefone"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:background="@drawable/inputs"
         android:gravity="center"
         android:orientation="horizontal">
@@ -85,9 +87,11 @@
 
     <LinearLayout
         android:id="@+id/cadastroLayout_Cpf"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:background="@drawable/inputs"
         android:gravity="center"
         android:orientation="horizontal">
@@ -128,9 +132,11 @@
 
     <LinearLayout
         android:id="@+id/cadastroLayout_Cep"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:background="@drawable/inputs"
         android:gravity="center"
         android:orientation="horizontal">
@@ -171,10 +177,12 @@
 
     <Spinner
         android:id="@+id/cadastro_SpinnerCategoria"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="25dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="25dp"
         android:background="@drawable/inputs"
         android:entries="@array/deficiencias"
         android:paddingLeft="20dp"

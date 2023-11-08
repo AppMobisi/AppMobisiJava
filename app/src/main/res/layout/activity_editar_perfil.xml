@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".view.editarPerfil">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".view.editarPerfil">
 
@@ -49,11 +54,14 @@
         android:textColor="@color/gray"
         android:textSize="15sp" />
 
+
     <LinearLayout
         android:id="@+id/cadastroLayout_Nome"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:background="@drawable/inputs"
         android:gravity="center"
         android:orientation="horizontal">
@@ -82,7 +90,6 @@
 
     </LinearLayout>
 
-
     <TextView
         android:id="@+id/cadastroLabel_Email"
         android:layout_width="wrap_content"
@@ -96,9 +103,11 @@
 
     <LinearLayout
         android:id="@+id/cadastroLayout_Email"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:background="@drawable/inputs"
         android:gravity="center"
         android:orientation="horizontal">
@@ -139,9 +148,11 @@
 
     <LinearLayout
         android:id="@+id/cadastroLayout_Telefone"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:background="@drawable/inputs"
         android:gravity="center"
         android:orientation="horizontal">
@@ -171,49 +182,6 @@
 
 
     <TextView
-        android:id="@+id/cadastroLabel_Cpf"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/poppins_2"
-        android:text="CPF"
-        android:textColor="@color/gray"
-        android:textSize="15sp" />
-
-    <LinearLayout
-        android:id="@+id/cadastroLayout_Cpf"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/inputs"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/icone_cpf" />
-
-        <EditText
-            android:id="@+id/CpfAtualizar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/nula"
-            android:ems="10"
-            android:hint="Digite seu CPF"
-            android:inputType="number"
-            android:maxLength="11"
-            android:singleLine="false"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray" />
-
-    </LinearLayout>
-
-    <TextView
         android:id="@+id/cadastroLabel_Cep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -226,9 +194,11 @@
 
     <LinearLayout
         android:id="@+id/cadastroLayout_Cep"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:background="@drawable/inputs"
         android:gravity="center"
         android:orientation="horizontal">
@@ -259,10 +229,12 @@
 
     <Button
         android:id="@+id/ataulizar"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="center"
-        android:layout_marginTop="30dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="25dp"
         android:backgroundTint="@color/light_blue"
         android:fontFamily="@font/poppins_bold"
         android:onClick="verifica"
@@ -273,3 +245,4 @@
         app:cornerRadius="20dp" />
 
 </LinearLayout>
+</ScrollView>

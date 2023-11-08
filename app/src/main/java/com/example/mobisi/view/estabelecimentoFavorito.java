@@ -61,10 +61,10 @@ public class estabelecimentoFavorito extends AppCompatActivity {
                     QuerySnapshot querySnapshot = task.getResult();
                     for (DocumentSnapshot document : querySnapshot){
                         String DocumentoId = document.getId();
-                        String nome = document.getString("name");
-                        Float nota =  Float.parseFloat(document.getDouble("score").toString());
+                        String nome = document.getString("cNome");
+                        Float nota =  Float.parseFloat(document.getDouble("nNota").toString());
                         String foto = document.getString("cFoto");
-                        String rua = document.getString("neighborhood");
+                        String rua = document.getString("cEndereco");
 
                         if (nome != null && nota != null && foto != null && rua != null){
                             EstabelecimentoFavoritos estabelecimentoFavorito = new EstabelecimentoFavoritos(DocumentoId, nome, rua, foto, nota);

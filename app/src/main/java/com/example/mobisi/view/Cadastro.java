@@ -6,18 +6,15 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mobisi.R;
 import com.example.mobisi.SqlLite.SqlLiteConnection;
 import com.example.mobisi.model.Endereco;
-import com.example.mobisi.model.SingUp;
-import com.example.mobisi.model.SingUpResponse;
+import com.example.mobisi.model.ApiPostgres;
+import com.example.mobisi.model.AuthResponse;
 import com.example.mobisi.model.Usuario;
 import com.example.mobisi.model.UsuarioDto;
 import com.example.mobisi.model.ViaCep;
@@ -60,21 +57,27 @@ public class Cadastro extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        SingUp service = retrofit.create(SingUp.class);
+        ApiPostgres service = retrofit.create(ApiPostgres.class);
         UsuarioDto post = new UsuarioDto(usuario);
-        Call<SingUpResponse> singUpResponseCall = service.signUp(post);
-        singUpResponseCall.enqueue(new Callback<SingUpResponse>() {
+        Call<AuthResponse> singUpResponseCall = service.signUp(post);
+        singUpResponseCall.enqueue(new Callback<AuthResponse>() {
             @Override
-            public void onResponse(Call<SingUpResponse> call, Response<SingUpResponse> response) {
+            public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
                 if(response.isSuccessful()){
-                    SingUpResponse singUpResponse = response.body();
-                    usuario.setId(singUpResponse.getData().getId());
-                    salvarSqlLIte();
+                    AuthResponse authResponse = response.body();
+                    if (authResponse.statusCode == 201) {
+                        usuario.setId(authResponse.data.id);
+                        salvarSqlLIte();
+                    } else{
+                        Toast.makeText(Cadastro.this, authResponse.message, Toast.LENGTH_SHORT).show();
+                    }
+                } else{
+                    Toast.makeText(Cadastro.this,"Erro ao chamar Api", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<SingUpResponse> call, Throwable t) {
+            public void onFailure(Call<AuthResponse> call, Throwable t) {
                 Toast.makeText(Cadastro.this,"Erro ao chamar api", Toast.LENGTH_SHORT).show();
             }
         });
