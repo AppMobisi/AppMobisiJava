@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".view.noInternet">
@@ -21,5 +22,6 @@
         android:fontFamily="@font/poppins_bold"
         android:text="Opps.. Parece que você está sem internet!"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="34sp" />
 </LinearLayout>

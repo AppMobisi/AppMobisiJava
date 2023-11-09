@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.mobisi.R;
@@ -18,7 +21,9 @@ import com.example.mobisi.model.AuthResponse;
 import com.example.mobisi.model.Usuario;
 import com.example.mobisi.model.UsuarioDto;
 import com.example.mobisi.model.ViaCep;
-
+import com.example.mobisi.tools.InternetConnectionReceiver;
+import com.example.mobisi.tools.MaskEnum;
+import com.example.mobisi.tools.MaskFormatter;
 
 
 import retrofit2.Call;
@@ -27,7 +32,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Cadastro extends AppCompatActivity {
+public class Cadastro extends AppCompatActivity implements InternetConnectionReceiver.ConnectionListener {
 
     Usuario usuario = new Usuario();
     primeiro_cadastro pc = primeiro_cadastro.newInstance();
@@ -36,9 +41,13 @@ public class Cadastro extends AppCompatActivity {
     String decisao = "continua";
 
     SqlLiteConnection sql = new SqlLiteConnection(this);
+    private InternetConnectionReceiver connectionReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        connectionReceiver = new InternetConnectionReceiver(this);
+        registerReceiver(connectionReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
         if (savedInstanceState == null) {
@@ -46,6 +55,7 @@ public class Cadastro extends AppCompatActivity {
                     .replace(R.id.container, pc)
                     .commitNow();
         }
+
 
 
     }
@@ -60,25 +70,34 @@ public class Cadastro extends AppCompatActivity {
         ApiPostgres service = retrofit.create(ApiPostgres.class);
         UsuarioDto post = new UsuarioDto(usuario);
         Call<AuthResponse> singUpResponseCall = service.signUp(post);
+        ((ProgressBar) findViewById(R.id.carregarSingup)).setVisibility(View.VISIBLE);
         singUpResponseCall.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+
                 if(response.isSuccessful()){
                     AuthResponse authResponse = response.body();
                     if (authResponse.statusCode == 201) {
                         usuario.setId(authResponse.data.id);
+                        ((ProgressBar) findViewById(R.id.carregarSingup)).setVisibility(View.GONE);
                         salvarSqlLIte();
+
                     } else{
                         Toast.makeText(Cadastro.this, authResponse.message, Toast.LENGTH_SHORT).show();
+                        ((ProgressBar) findViewById(R.id.carregarSingup)).setVisibility(View.GONE);
                     }
                 } else{
-                    Toast.makeText(Cadastro.this,"Erro ao chamar Api", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(Cadastro.this,  "Email já cadastrado", Toast.LENGTH_SHORT).show();
+                    ((ProgressBar) findViewById(R.id.carregarSingup)).setVisibility(View.GONE);
+
                 }
             }
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
                 Toast.makeText(Cadastro.this,"Erro ao chamar api", Toast.LENGTH_SHORT).show();
+                ((ProgressBar) findViewById(R.id.carregarSingup)).setVisibility(View.GONE);
             }
         });
 
@@ -117,23 +136,33 @@ public class Cadastro extends AppCompatActivity {
         if (nome.isEmpty() || email.isEmpty() || senha.isEmpty()){
 
             showToast("Todos os campos são obrigatórios");
-        }
-        else {
+        } else if (!email.contains("@") || !email.contains(".com")) {
+            showToast("Formato de E-mail Inválido");
+        } else {
             continuaFluxo(nome, email, senha);
         }
     }
 
     public void verificarSegunda(){
         String telefone = ((EditText) findViewById(R.id.TelefoneAtualizar)).getText().toString();
-        String cpf = ((EditText) findViewById(R.id.CpfAtualizar)).getText().toString();
+        String cpf = ((EditText) findViewById(R.id.CpfAtualizar)).getText().toString().replace(".", "").replace("-", "");
         String cep = ((EditText) findViewById(R.id.CepAtualizar)).getText().toString();
+        EditText cpfEditText = findViewById(R.id.CpfAtualizar);
 
-        if(telefone.isEmpty() || cpf.isEmpty() || cep.isEmpty()){
-           showToast("Todos os campos são obrigatórios");
-        }else if (validaCPF(cpf)) {
-            VerificaCep();
+        MaskFormatter maskFormatterCpf = new MaskFormatter(MaskEnum.CPF.getMask(), cpfEditText);
+
+
+
+        if(telefone.isEmpty() || cpf.isEmpty() || cep.isEmpty() || usuario.getiTipoDeficiencia() == null) {
+            showToast("Todos os campos são obrigatórios");
         } else{
-            showToast("Seu cpf ta errado seu otario");
+            if (maskFormatterCpf.isMaskMatching()){
+                if (validaCPF(cpf)){
+                    VerificaCep();
+                }else {
+                    showToast("Cpf errado");
+                }
+            }
         }
     }
     public void VerificaCep(){
@@ -273,5 +302,20 @@ public class Cadastro extends AppCompatActivity {
 
     public void setiTipoDeficiencia(int iTipoDeficiencia) {
         usuario.setiTipoDeficiencia(iTipoDeficiencia);
+    }
+
+
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            // Se a conexão com a internet for perdida, redirecione para a tela de aviso
+            Intent intent = new Intent(this, noInternet.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(connectionReceiver);
     }
 }

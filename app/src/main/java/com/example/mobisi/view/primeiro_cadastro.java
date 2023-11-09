@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.mobisi.R;
+import com.example.mobisi.tools.MaskEnum;
+import com.example.mobisi.tools.MaskFormatter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -98,6 +100,7 @@ public class primeiro_cadastro extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
+
     }
 
     public boolean isValidPassword(String senha){

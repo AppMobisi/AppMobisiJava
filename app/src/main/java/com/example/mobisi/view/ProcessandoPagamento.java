@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -17,6 +19,7 @@ import com.example.mobisi.model.Anunciante;
 import com.example.mobisi.model.Anuncios;
 import com.example.mobisi.model.OnImageUploadListener;
 import com.example.mobisi.model.Usuario;
+import com.example.mobisi.tools.InternetConnectionReceiver;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,14 +28,20 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-public class ProcessandoPagamento extends AppCompatActivity {
+public class ProcessandoPagamento extends AppCompatActivity implements InternetConnectionReceiver.ConnectionListener {
 
     Anuncios anuncio;
     Uri foto;
     SqlLiteConnection sql;
 
+    private InternetConnectionReceiver connectionReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        connectionReceiver = new InternetConnectionReceiver(this);
+        registerReceiver(connectionReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
         try {
             Bundle lerEnvelope = getIntent().getExtras();
 
@@ -172,4 +181,18 @@ public class ProcessandoPagamento extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            // Se a conexão com a internet for perdida, redirecione para a tela de aviso
+            Intent intent = new Intent(this, noInternet.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(connectionReceiver);
+    }
 }

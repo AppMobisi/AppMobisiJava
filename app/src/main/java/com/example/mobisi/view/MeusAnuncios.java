@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -14,6 +16,7 @@ import com.example.mobisi.SqlLite.SqlLiteConnection;
 import com.example.mobisi.firebase.Firebase;
 import com.example.mobisi.model.AnunciosFavoritos;
 import com.example.mobisi.model.Usuario;
+import com.example.mobisi.tools.InternetConnectionReceiver;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,15 +27,20 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MeusAnuncios extends AppCompatActivity {
+public class MeusAnuncios extends AppCompatActivity implements InternetConnectionReceiver.ConnectionListener {
+
     static ArrayList<AnunciosFavoritos> meusAnuncios;
     SqlLiteConnection sql;
     Usuario usuario;
     ListView lista;
     TextView msgErro;
+    private InternetConnectionReceiver connectionReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        connectionReceiver = new InternetConnectionReceiver(this);
+        registerReceiver(connectionReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meus_anuncios);
 
@@ -91,4 +99,20 @@ public class MeusAnuncios extends AppCompatActivity {
             adapter.notifyDataSetChanged();
         }
     }
+
+
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            // Se a conexão com a internet for perdida, redirecione para a tela de aviso
+            Intent intent = new Intent(this, noInternet.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(connectionReceiver);
+    }
+
 }

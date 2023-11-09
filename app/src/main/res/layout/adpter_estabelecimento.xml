@@ -36,6 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
+        android:background="@color/white"
         android:fontFamily="@font/poppins_bold"
         android:text="Nome"
         android:textColor="@color/black"

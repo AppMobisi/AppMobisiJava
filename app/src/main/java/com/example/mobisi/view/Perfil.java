@@ -12,9 +12,11 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -33,6 +35,7 @@ import com.example.mobisi.model.Anuncios;
 import com.example.mobisi.model.AnunciosFavoritos;
 import com.example.mobisi.model.EstabelecimentoFavoritos;
 import com.example.mobisi.model.Usuario;
+import com.example.mobisi.tools.InternetConnectionReceiver;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -50,7 +53,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Perfil extends AppCompatActivity {
+public class Perfil extends AppCompatActivity implements InternetConnectionReceiver.ConnectionListener {
 
     SqlLiteConnection sql;
     Usuario usuario;
@@ -62,13 +65,17 @@ public class Perfil extends AppCompatActivity {
     ImageView selected_image;
     ImageView semFoto;
 
-
+    private InternetConnectionReceiver connectionReceiver;
 
     private static final int CAMERA_PERMISSION_REQUEST = 1;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        connectionReceiver = new InternetConnectionReceiver(this);
+        registerReceiver(connectionReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
@@ -258,5 +265,20 @@ public class Perfil extends AppCompatActivity {
 
         AlertDialog alerta = builder.create();
         alerta.show();
+    }
+
+
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            // Se a conexão com a internet for perdida, redirecione para a tela de aviso
+            Intent intent = new Intent(this, noInternet.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(connectionReceiver);
     }
 }

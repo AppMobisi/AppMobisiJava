@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +21,7 @@ import com.example.mobisi.firebase.Firebase;
 import com.example.mobisi.model.AnunciosFavoritos;
 import com.example.mobisi.model.EstabelecimentoFavoritos;
 import com.example.mobisi.model.Usuario;
+import com.example.mobisi.tools.InternetConnectionReceiver;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -30,14 +33,18 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class estabelecimentoFavorito extends AppCompatActivity {
+public class estabelecimentoFavorito extends AppCompatActivity implements InternetConnectionReceiver.ConnectionListener {
     static ArrayList<EstabelecimentoFavoritos> estabelecimentoFavoritos;
     SqlLiteConnection sql;
     Usuario usuario;
     ListView lista;
     TextView msgErro;
+    private InternetConnectionReceiver connectionReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        connectionReceiver = new InternetConnectionReceiver(this);
+        registerReceiver(connectionReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_estabelecimento_favorito);
 
@@ -144,6 +151,21 @@ public class estabelecimentoFavorito extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            // Se a conexão com a internet for perdida, redirecione para a tela de aviso
+            Intent intent = new Intent(this, noInternet.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(connectionReceiver);
     }
 
 }

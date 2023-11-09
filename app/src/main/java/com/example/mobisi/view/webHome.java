@@ -7,11 +7,13 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,12 +27,13 @@ import com.bumptech.glide.Glide;
 import com.example.mobisi.R;
 import com.example.mobisi.SqlLite.SqlLiteConnection;
 import com.example.mobisi.model.Usuario;
+import com.example.mobisi.tools.InternetConnectionReceiver;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class webHome extends AppCompatActivity {
+public class webHome extends AppCompatActivity implements InternetConnectionReceiver.ConnectionListener {
 
     private final Map<Integer, ImagePair> imagePairs = new HashMap<>();
     private SqlLiteConnection sql;
@@ -42,6 +45,8 @@ public class webHome extends AppCompatActivity {
     private int usuarioId;
     private double latitude;
     private double longitude;
+
+    private InternetConnectionReceiver connectionReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,8 @@ public class webHome extends AppCompatActivity {
             }
         }
 
+        connectionReceiver = new InternetConnectionReceiver(this);
+        registerReceiver(connectionReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         sql = new SqlLiteConnection(this);
         Usuario usuario = sql.getInfos();
         usuarioId = usuario.getId();
@@ -259,6 +266,21 @@ public class webHome extends AppCompatActivity {
     private boolean temPermissaoLocalizacao() {
         int permissao = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         return permissao == PackageManager.PERMISSION_GRANTED;
+    }
+
+
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            // Se a conexão com a internet for perdida, redirecione para a tela de aviso
+            Intent intent = new Intent(this, noInternet.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(connectionReceiver);
     }
     private static class ImagePair {
         int blueImage;

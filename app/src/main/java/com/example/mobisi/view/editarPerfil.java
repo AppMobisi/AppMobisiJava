@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +23,9 @@ import com.example.mobisi.model.Endereco;
 import com.example.mobisi.model.UpdateDto;
 import com.example.mobisi.model.Usuario;
 import com.example.mobisi.model.ViaCep;
+import com.example.mobisi.tools.InternetConnectionReceiver;
+import com.example.mobisi.tools.MaskEnum;
+import com.example.mobisi.tools.MaskFormatter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,7 +43,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class editarPerfil extends AppCompatActivity {
+public class editarPerfil extends AppCompatActivity implements InternetConnectionReceiver.ConnectionListener {
 
     SqlLiteConnection sql;
     Endereco endereco;
@@ -47,8 +53,15 @@ public class editarPerfil extends AppCompatActivity {
     EditText telefone;
     EditText cep;
 
+    MaskFormatter maskFormatterTelefone;
+    MaskFormatter maskFormatterCep;
+    private InternetConnectionReceiver connectionReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        connectionReceiver = new InternetConnectionReceiver(this);
+        registerReceiver(connectionReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
          bundle = getIntent().getExtras();
 
         super.onCreate(savedInstanceState);
@@ -66,6 +79,11 @@ public class editarPerfil extends AppCompatActivity {
 
         sql = new SqlLiteConnection(this);
 
+        maskFormatterCep = new MaskFormatter(MaskEnum.CEP.getMask(), cep);
+        cep.addTextChangedListener(maskFormatterCep);
+
+        maskFormatterTelefone = new MaskFormatter(MaskEnum.TELEFONE.getMask(), telefone);
+        telefone.addTextChangedListener(maskFormatterTelefone);
 
     }
 
@@ -120,6 +138,8 @@ public class editarPerfil extends AppCompatActivity {
                     endereco = response.body();
                     if (!endereco.erro) {
                         continuarAposVerifica();
+                    }else{
+                        Toast.makeText(editarPerfil.this, "Não foi possível encontrar o CEP.", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     Toast.makeText(editarPerfil.this, "Não foi possível encontrar o CEP.", Toast.LENGTH_LONG).show();
@@ -137,13 +157,14 @@ public class editarPerfil extends AppCompatActivity {
 
     public void continuarAposVerifica(){
 
+        if (maskFormatterTelefone.isMaskMatching() && maskFormatterCep.isMaskMatching()) {
             Usuario usuario = new Usuario();
             usuario.setcNome(nome.getText().toString());
             usuario.setcEmail(email.getText().toString());
             usuario.setcTelefone(telefone.getText().toString());
             usuario.setcCep(cep.getText().toString());
 
-            if (endereco != null){
+            if (endereco != null) {
                 usuario.setcCidade(endereco.localidade);
                 usuario.setcRua(endereco.logradouro);
                 usuario.setcEstado(endereco.uf);
@@ -161,16 +182,19 @@ public class editarPerfil extends AppCompatActivity {
 
                 ApiPostgres service = retrofit.create(ApiPostgres.class);
                 Call<Void> responseCall = service.updateUser(usuarioNovo.getId(), updateUsurio);
+                ((ProgressBar) findViewById(R.id.carregandoEditar)).setVisibility(View.VISIBLE);
                 responseCall.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
-                        if (response.isSuccessful()){
+                        if (response.isSuccessful()) {
+                            ((ProgressBar) findViewById(R.id.carregandoEditar)).setVisibility(View.GONE);
                             atualizarFirebase(usuarioNovo);
                             Toast.makeText(editarPerfil.this, "Usuário atualizado com sucesso", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(editarPerfil.this, Perfil.class);
                             startActivity(intent);
-                        } else{
+                        } else {
                             sql.rollBack(usuarioAntigo);
+                            ((ProgressBar) findViewById(R.id.carregandoEditar)).setVisibility(View.GONE);
                             Toast.makeText(editarPerfil.this, "Não conseguimos atualizar o  seu usuário", Toast.LENGTH_LONG).show();
                         }
                     }
@@ -178,6 +202,7 @@ public class editarPerfil extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
                         sql.rollBack(usuarioAntigo);
+                        ((ProgressBar) findViewById(R.id.carregandoEditar)).setVisibility(View.GONE);
                         Toast.makeText(editarPerfil.this, "Não conseguimos atualizar o  seu usuário", Toast.LENGTH_LONG).show();
                     }
                 });
@@ -188,7 +213,9 @@ public class editarPerfil extends AppCompatActivity {
             }
 
 
-
+        }else{
+            Toast.makeText(this, "Alguma coisa que você está tentando atualizar está errada", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void atualizarFirebase(Usuario usuario){
@@ -216,4 +243,18 @@ public class editarPerfil extends AppCompatActivity {
         });
     }
 
+
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            // Se a conexão com a internet for perdida, redirecione para a tela de aviso
+            Intent intent = new Intent(this, noInternet.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(connectionReceiver);
+    }
 }
