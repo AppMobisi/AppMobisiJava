@@ -61,6 +61,11 @@ public class SqlLiteConnection extends SQLiteOpenHelper {
         try {
             Cursor cursor = db.rawQuery("SELECT * FROM Usuario", null);
             if (cursor.moveToFirst()){
+                int id = cursor.getInt(0);
+                String nome = cursor.getString(1);
+                if (id== 0 ){
+                    return false;
+                }
                 return true;
             }
         }catch (Exception ex){
@@ -126,7 +131,6 @@ public class SqlLiteConnection extends SQLiteOpenHelper {
         contentValues.put("cEmail", usuario.getcEmail());
         contentValues.put("cTelefone", usuario.getcTelefone());
         contentValues.put("cCep", usuario.getcCep());
-        contentValues.put("cCpf", usuario.getcCpf());
         if (usuario.getcEstado() != null){
             contentValues.put("cEstado", usuario.getcEstado());
             contentValues.put("cRua", usuario.getcRua());
@@ -152,5 +156,30 @@ public class SqlLiteConnection extends SQLiteOpenHelper {
     public void logout(){
        SQLiteDatabase db = getWritableDatabase();
        db.delete("Usuario", null, null);
+    }
+
+    public boolean rollBack(Usuario usuario){
+        SQLiteDatabase db = getWritableDatabase();
+
+        try {
+            ContentValues valores = new ContentValues();
+            valores.put("iId", usuario.getId());
+            valores.put("cNome", usuario.getcNome());
+            valores.put("cSenha", usuario.getcSenha());
+            valores.put("cTelefone", usuario.getcTelefone());
+            valores.put("cEmail", usuario.getcEmail());
+            valores.put("cCep", usuario.getcCep());
+            valores.put("cCpf", usuario.getcCpf());
+            valores.put("cRua", usuario.getcRua());
+            valores.put("cEstado", usuario.getcEstado());
+            valores.put("cCidade", usuario.getcCidade());
+            valores.put("iTipoDeficiencia", usuario.getiTipoDeficiencia());
+            valores.put("cFoto", usuario.getcFoto());
+            long id = db.insert("Usuario", null, valores);
+            return true;
+        }catch (Exception ex){
+            db.close();
+            return false;
+        }
     }
 }

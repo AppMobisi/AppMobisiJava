@@ -13,6 +13,7 @@
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:clickable="true"
-                android:contentDescription="anuncio"
+                android:contentDescription="https://mobisiweb.onrender.com/produtos"
                 android:onClick="abrir"
                 app:srcCompat="@drawable/anuncio_cinza" />
 
@@ -84,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:contentDescription="htttps://mobisirender/estabelecimento"
+                android:contentDescription="https://mobisiweb.onrender.com/estabelecimentos/"
                 android:onClick="abrir"
                 app:srcCompat="@drawable/estabelecimento_cinza" />
 
@@ -101,11 +102,9 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-    <FrameLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:background="@drawable/foto_perfil_home"
         app:layout_constraintBottom_toBottomOf="@+id/webView"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
         app:layout_constraintStart_toStartOf="parent"
@@ -113,22 +112,24 @@
         android:contentDescription="perfil"
         android:onClick="abrirPerfil"
         android:clickable="true"
-        >
+        app:cardCornerRadius="50dp">
+
 
         <ImageView
             android:id="@+id/perfil"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             app:srcCompat="@drawable/perfil_home" />
 
         <ImageView
             android:id="@+id/perfil_foto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:visibility="gone"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/foto_perfil_home"/>
+            />
 
-    </FrameLayout>
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

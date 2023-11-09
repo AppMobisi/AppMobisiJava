@@ -41,9 +41,11 @@
 
     <LinearLayout
         android:id="@+id/cadastroLayout_Telefone"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:background="@drawable/inputs"
         android:gravity="center"
         android:orientation="horizontal">
@@ -64,7 +66,7 @@
             android:ems="10"
             android:hint="Digite seu telefone"
             android:inputType="phone"
-            android:maxLength="11"
+            android:maxLength="18"
             android:singleLine="false"
             android:textColor="@color/black"
             android:textColorHint="@color/gray" />
@@ -85,9 +87,11 @@
 
     <LinearLayout
         android:id="@+id/cadastroLayout_Cpf"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:background="@drawable/inputs"
         android:gravity="center"
         android:orientation="horizontal">
@@ -108,7 +112,7 @@
             android:ems="10"
             android:hint="Digite seu CPF"
             android:inputType="number"
-            android:maxLength="11"
+            android:maxLength="14"
             android:singleLine="false"
             android:textColor="@color/black"
             android:textColorHint="@color/gray" />
@@ -128,9 +132,11 @@
 
     <LinearLayout
         android:id="@+id/cadastroLayout_Cep"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:background="@drawable/inputs"
         android:gravity="center"
         android:orientation="horizontal">
@@ -150,7 +156,7 @@
             android:background="@color/nula"
             android:ems="10"
             android:hint="Digite seu CEP"
-            android:inputType="textPersonName"
+            android:inputType="number"
             android:maxLength="9"
             android:singleLine="false"
             android:textColor="@color/black"
@@ -171,10 +177,12 @@
 
     <Spinner
         android:id="@+id/cadastro_SpinnerCategoria"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="25dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="25dp"
         android:background="@drawable/inputs"
         android:entries="@array/deficiencias"
         android:paddingLeft="20dp"

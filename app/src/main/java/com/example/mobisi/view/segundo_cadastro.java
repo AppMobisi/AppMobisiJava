@@ -6,14 +6,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.mobisi.R;
+import com.example.mobisi.tools.MaskEnum;
+import com.example.mobisi.tools.MaskFormatter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -97,5 +102,19 @@ public class segundo_cadastro extends Fragment {
                 // Lidar com a seleção de nada, se necessário
             }
         });
+
+        EditText cpf = view.findViewById(R.id.CpfAtualizar);
+        MaskFormatter maskFormatterCpf = new MaskFormatter(MaskEnum.CPF.getMask(), cpf);
+        cpf.addTextChangedListener(maskFormatterCpf);
+
+        EditText telefone = view.findViewById(R.id.TelefoneAtualizar);
+        MaskFormatter maskFormatterTelefone = new MaskFormatter(MaskEnum.TELEFONE.getMask(), telefone);
+        telefone.addTextChangedListener(maskFormatterTelefone);
+
+        EditText cep = view.findViewById(R.id.CepAtualizar);
+        MaskFormatter maskFormatter = new MaskFormatter(MaskEnum.CEP.getMask(), cep);
+        cep.addTextChangedListener(maskFormatter);
+
+
     }
 }

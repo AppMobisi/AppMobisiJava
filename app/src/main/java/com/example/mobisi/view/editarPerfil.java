@@ -1,19 +1,40 @@
 package com.example.mobisi.view;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mobisi.R;
 import com.example.mobisi.SqlLite.SqlLiteConnection;
+import com.example.mobisi.firebase.Firebase;
+import com.example.mobisi.model.Anunciante;
+import com.example.mobisi.model.ApiPostgres;
+import com.example.mobisi.model.AuthResponse;
 import com.example.mobisi.model.Endereco;
+import com.example.mobisi.model.UpdateDto;
 import com.example.mobisi.model.Usuario;
 import com.example.mobisi.model.ViaCep;
+import com.example.mobisi.tools.InternetConnectionReceiver;
+import com.example.mobisi.tools.MaskEnum;
+import com.example.mobisi.tools.MaskFormatter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firestore.bundle.BundledQueryOrBuilder;
 
 import retrofit2.Call;
@@ -22,7 +43,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class editarPerfil extends AppCompatActivity {
+public class editarPerfil extends AppCompatActivity implements InternetConnectionReceiver.ConnectionListener {
 
     SqlLiteConnection sql;
     Endereco endereco;
@@ -31,10 +52,16 @@ public class editarPerfil extends AppCompatActivity {
     EditText email;
     EditText telefone;
     EditText cep;
-    EditText cpf;
+
+    MaskFormatter maskFormatterTelefone;
+    MaskFormatter maskFormatterCep;
+    private InternetConnectionReceiver connectionReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        connectionReceiver = new InternetConnectionReceiver(this);
+        registerReceiver(connectionReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
          bundle = getIntent().getExtras();
 
         super.onCreate(savedInstanceState);
@@ -44,16 +71,19 @@ public class editarPerfil extends AppCompatActivity {
         email = findViewById(R.id.EmailAtualizar);
         telefone = findViewById(R.id.TelefoneAtualizar);
         cep = findViewById(R.id.CepAtualizar);
-        cpf = findViewById(R.id.CpfAtualizar);
 
         nome.setText(bundle.getString("Nome"));
         email.setText(bundle.getString("Email"));
         telefone.setText(bundle.getString("Telefone"));
         cep.setText(bundle.getString("Cep"));
-        cpf.setText(bundle.getString("Cpf"));
 
         sql = new SqlLiteConnection(this);
 
+        maskFormatterCep = new MaskFormatter(MaskEnum.CEP.getMask(), cep);
+        cep.addTextChangedListener(maskFormatterCep);
+
+        maskFormatterTelefone = new MaskFormatter(MaskEnum.TELEFONE.getMask(), telefone);
+        telefone.addTextChangedListener(maskFormatterTelefone);
 
     }
 
@@ -69,8 +99,8 @@ public class editarPerfil extends AppCompatActivity {
         if (nome.getText().toString().isEmpty() ||
                 email.getText().toString().isEmpty() ||
                 telefone.getText().toString().isEmpty() ||
-                cep.getText().toString().isEmpty() ||
-                cpf.getText().toString().isEmpty()){
+                cep.getText().toString().isEmpty()
+                ){
 
             Toast.makeText(this, "Todos os campos são obrigatórios", Toast.LENGTH_LONG).show();
         } else if (cep.getText().toString() != bundle.get("Cep")){
@@ -108,8 +138,9 @@ public class editarPerfil extends AppCompatActivity {
                     endereco = response.body();
                     if (!endereco.erro) {
                         continuarAposVerifica();
+                    }else{
+                        Toast.makeText(editarPerfil.this, "Não foi possível encontrar o CEP.", Toast.LENGTH_LONG).show();
                     }
-                    Toast.makeText(editarPerfil.this, "Não foi possível encontrar o CEP.", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(editarPerfil.this, "Não foi possível encontrar o CEP.", Toast.LENGTH_LONG).show();
                 }
@@ -126,29 +157,104 @@ public class editarPerfil extends AppCompatActivity {
 
     public void continuarAposVerifica(){
 
+        if (maskFormatterTelefone.isMaskMatching() && maskFormatterCep.isMaskMatching()) {
             Usuario usuario = new Usuario();
             usuario.setcNome(nome.getText().toString());
             usuario.setcEmail(email.getText().toString());
             usuario.setcTelefone(telefone.getText().toString());
             usuario.setcCep(cep.getText().toString());
-            usuario.setcCpf(cpf.getText().toString());
 
-            if (endereco != null){
+            if (endereco != null) {
                 usuario.setcCidade(endereco.localidade);
                 usuario.setcRua(endereco.logradouro);
                 usuario.setcEstado(endereco.uf);
             }
-
+            Usuario usuarioAntigo = sql.getInfos();
             int linhas = sql.atualizar(usuario);
             if (linhas > 0) {
-                Toast.makeText(this, "Usuário atualizado com sucesso", Toast.LENGTH_LONG).show();
+                Usuario usuarioNovo = sql.getInfos();
+                UpdateDto updateUsurio = new UpdateDto(usuarioNovo);
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("https://apipostgres.onrender.com/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                ApiPostgres service = retrofit.create(ApiPostgres.class);
+                Call<Void> responseCall = service.updateUser(usuarioNovo.getId(), updateUsurio);
+                ((ProgressBar) findViewById(R.id.carregandoEditar)).setVisibility(View.VISIBLE);
+                responseCall.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            ((ProgressBar) findViewById(R.id.carregandoEditar)).setVisibility(View.GONE);
+                            atualizarFirebase(usuarioNovo);
+                            Toast.makeText(editarPerfil.this, "Usuário atualizado com sucesso", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(editarPerfil.this, Perfil.class);
+                            startActivity(intent);
+                        } else {
+                            sql.rollBack(usuarioAntigo);
+                            ((ProgressBar) findViewById(R.id.carregandoEditar)).setVisibility(View.GONE);
+                            Toast.makeText(editarPerfil.this, "Não conseguimos atualizar o  seu usuário", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        sql.rollBack(usuarioAntigo);
+                        ((ProgressBar) findViewById(R.id.carregandoEditar)).setVisibility(View.GONE);
+                        Toast.makeText(editarPerfil.this, "Não conseguimos atualizar o  seu usuário", Toast.LENGTH_LONG).show();
+                    }
+                });
+
+
             } else {
                 Toast.makeText(this, "Algo deu errado ao tentar atualizar o seu usuário", Toast.LENGTH_LONG).show();
             }
 
-            Intent intent = new Intent(this, Perfil.class);
-            startActivity(intent);
 
+        }else{
+            Toast.makeText(this, "Alguma coisa que você está tentando atualizar está errada", Toast.LENGTH_LONG).show();
+        }
     }
 
+    public void atualizarFirebase(Usuario usuario){
+        FirebaseFirestore db = Firebase.getFirebaseFirestore();
+        Query query = db.collection("Anunciantes").whereEqualTo("iUsuarioId", usuario.getId());
+
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for (DocumentSnapshot documentSnapshot : task.getResult()){
+                        Anunciante anunciante = new Anunciante(usuario.getcNome(),
+                                usuario.getcEmail(),
+                                usuario.getcTelefone(),
+                                usuario.getcCpf(),
+                                usuario.getcCep(),
+                                0.0,
+                                usuario.getId())  ;
+
+                        String documentId = documentSnapshot.getId();
+                        db.collection("Anunciantes").document(documentId).set(anunciante);
+                    }
+                }
+            }
+        });
+    }
+
+
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            // Se a conexão com a internet for perdida, redirecione para a tela de aviso
+            Intent intent = new Intent(this, noInternet.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(connectionReceiver);
+    }
 }

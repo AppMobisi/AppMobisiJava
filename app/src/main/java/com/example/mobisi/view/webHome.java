@@ -5,39 +5,39 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mobisi.R;
 import com.example.mobisi.SqlLite.SqlLiteConnection;
-import com.example.mobisi.model.InformacoesWeb;
 import com.example.mobisi.model.Usuario;
+import com.example.mobisi.tools.InternetConnectionReceiver;
 
-import java.io.InterruptedIOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class webHome extends AppCompatActivity {
+public class webHome extends AppCompatActivity implements InternetConnectionReceiver.ConnectionListener {
 
     private final Map<Integer, ImagePair> imagePairs = new HashMap<>();
     private SqlLiteConnection sql;
+    private String redireciona;
     private ImageView fotoPerfil;
     private ImageView semFoto;
     private LocationManager locationManager;
@@ -46,10 +46,11 @@ public class webHome extends AppCompatActivity {
     private double latitude;
     private double longitude;
 
+    private InternetConnectionReceiver connectionReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        String redireciona = "";
+        redireciona = "";
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             boolean internet = bundle.getBoolean("Internet");
@@ -60,52 +61,12 @@ public class webHome extends AppCompatActivity {
             }
         }
 
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_web_home);
-        abrirTela(redireciona);
-
+        connectionReceiver = new InternetConnectionReceiver(this);
+        registerReceiver(connectionReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         sql = new SqlLiteConnection(this);
-        imagePairs.put(R.id.home_azul, new ImagePair(R.drawable.home_azul, R.drawable.home_cinza));
-        imagePairs.put(R.id.anuncio_cinza, new ImagePair(R.drawable.anuncio_azul, R.drawable.anuncio_cinza));
-        imagePairs.put(R.id.estabelecimento_cinza, new ImagePair(R.drawable.estabelecimento_azul, R.drawable.estabelecimento_cinza));
-        imagePairs.put(R.id.anunciar_cinza, new ImagePair(R.drawable.anunciar_azul, R.drawable.anunciar_cinza));
-
-        for (Integer id : imagePairs.keySet()) {
-            ImageView imageView = findViewById(id);
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleImageClick((ImageView) v);
-                    abrirTela(((ImageView) v).getContentDescription().toString());
-                }
-
-
-            });
-        }
-
-        fotoPerfil = findViewById(R.id.perfil_foto);
-        semFoto = findViewById(R.id.perfil);
-
         Usuario usuario = sql.getInfos();
-        if (usuario.getcFoto() != null) {
-            fotoPerfil.setImageResource(R.drawable.foto_perfil_home);
-            Uri foto = Uri.parse(usuario.getcFoto());
-            Glide.with(this)
-                    .load(foto)
-                    .centerCrop()
-                    .into(fotoPerfil);
-
-            fotoPerfil.setVisibility(View.VISIBLE);
-            semFoto.setVisibility(View.GONE);
-
-        }
-
-
-        // Inicialize o LocationManager
+        usuarioId = usuario.getId();
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        // Inicialize o LocationListener
         locationListener = new LocationListener() {
 
 
@@ -148,6 +109,52 @@ public class webHome extends AppCompatActivity {
             // Registre o LocationListener para receber atualizações de localização
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
+
+
+
+
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_web_home);
+
+
+
+        imagePairs.put(R.id.home_azul, new ImagePair(R.drawable.home_azul, R.drawable.home_cinza));
+        imagePairs.put(R.id.anuncio_cinza, new ImagePair(R.drawable.anuncio_azul, R.drawable.anuncio_cinza));
+        imagePairs.put(R.id.estabelecimento_cinza, new ImagePair(R.drawable.estabelecimento_azul, R.drawable.estabelecimento_cinza));
+        imagePairs.put(R.id.anunciar_cinza, new ImagePair(R.drawable.anunciar_azul, R.drawable.anunciar_cinza));
+
+        for (Integer id : imagePairs.keySet()) {
+            ImageView imageView = findViewById(id);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleImageClick((ImageView) v);
+                    abrirTela(((ImageView) v).getContentDescription().toString());
+                }
+
+
+            });
+        }
+
+        fotoPerfil = findViewById(R.id.perfil_foto);
+        semFoto = findViewById(R.id.perfil);
+
+
+        if (usuario.getcFoto() != null) {
+            fotoPerfil.setImageResource(R.drawable.foto_perfil_home);
+            Uri foto = Uri.parse(usuario.getcFoto());
+            Glide.with(this)
+                    .load(foto)
+                    .centerCrop()
+                    .into(fotoPerfil);
+
+            fotoPerfil.setVisibility(View.VISIBLE);
+            semFoto.setVisibility(View.GONE);
+
+        }
+
+        abrirTela(redireciona);
     }
 
     private void handleImageClick(ImageView clickedImage) {
@@ -165,19 +172,32 @@ public class webHome extends AppCompatActivity {
 
 
     public void abrirTela(String descricao) {
-        if (descricao.contains("http")) {
+        if (descricao.equals("https://mobisiweb.onrender.com/")) {
+            abrir(descricao + usuarioId);
+        } else if (descricao.equals("https://mobisiweb.onrender.com/produtos")){
             abrir(descricao);
+        } else if (descricao.equals("https://mobisiweb.onrender.com/estabelecimentos/")) {
+            if (temPermissaoLocalizacao()) {
+                if (latitude == 0 && longitude == 0) {
+                    aguardarCoordenadasEPularURL(descricao);
+                } else {
+                    abrir(descricao + latitude + "/" + longitude);
+                }
+            } else{
+                Intent intent = new Intent(this, estabelecimentosErro.class);
+                startActivity(intent);
+            }
         } else {
             abrir_off();
         }
     }
 
 
-    @SuppressLint("JavascriptInterface")
+
     public void abrir(String url) {
         WebView safari = (WebView) findViewById(R.id.webView);
         safari.getSettings().setJavaScriptEnabled(true);
-        InformacoesWeb informacoesWeb = new InformacoesWeb(usuarioId, latitude, longitude);
+
         safari.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -191,8 +211,9 @@ public class webHome extends AppCompatActivity {
                 ((ProgressBar) findViewById(R.id.progressBar)).setVisibility(View.INVISIBLE);
             }
         });
-        safari.addJavascriptInterface(informacoesWeb, "informacoesWeb");
-        safari.loadUrl(url);
+
+
+       safari.loadUrl(url);
     }
 
     public void abrir_off() {
@@ -220,6 +241,47 @@ public class webHome extends AppCompatActivity {
         }
     }
 
+
+    private void aguardarCoordenadasEPularURL(final String descricao) {
+        final ProgressBar progressBar = findViewById(R.id.progressBar); // Substitua com o ID do seu ProgressBar
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (latitude != 0 || longitude != 0) {
+                    // Coordenadas preenchidas, carregar a URL
+                    abrir(descricao + latitude + "/" + longitude);
+                    progressBar.setVisibility(View.GONE);
+                } else {
+                    // Continuar aguardando
+                    handler.postDelayed(this, 5000); // Verificar a cada segundo
+                }
+            }
+        }, 5000); // Verificar a cada segundo
+    }
+
+    private boolean temPermissaoLocalizacao() {
+        int permissao = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        return permissao == PackageManager.PERMISSION_GRANTED;
+    }
+
+
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            // Se a conexão com a internet for perdida, redirecione para a tela de aviso
+            Intent intent = new Intent(this, noInternet.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(connectionReceiver);
+    }
     private static class ImagePair {
         int blueImage;
         int grayImage;

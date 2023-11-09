@@ -8,9 +8,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -33,6 +36,7 @@ import com.example.mobisi.R;
 import com.example.mobisi.SqlLite.SqlLiteConnection;
 import com.example.mobisi.firebase.Firebase;
 import com.example.mobisi.model.*;
+import com.example.mobisi.tools.InternetConnectionReceiver;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -46,7 +50,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Anuncio extends AppCompatActivity {
+public class Anuncio extends AppCompatActivity implements InternetConnectionReceiver.ConnectionListener{
 
     SqlLiteConnection sql = new SqlLiteConnection(this);
     private Anuncios anuncios = new Anuncios();
@@ -63,6 +67,9 @@ public class Anuncio extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        connectionReceiver = new InternetConnectionReceiver(this);
+        registerReceiver(connectionReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anuncio);
 
@@ -257,13 +264,46 @@ public class Anuncio extends AppCompatActivity {
 
 
     public void salvarAnuncioFirebase(Bundle bundle) {
-        Intent intent = new Intent(this, pagamentoAnuncio.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Preço da anúncio");
+        builder.setTitle("Para prosseguir você precisa pagar uma pequena taxa de R$5,00");
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(Anuncio.this, pagamentoAnuncio.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
+        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+
     }
 
 
+    private InternetConnectionReceiver connectionReceiver;
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (!isConnected) {
+            // Se a conexão com a internet for perdida, redirecione para a tela de aviso
+            Intent intent = new Intent(this, noInternet.class);
+            startActivity(intent);
+        }
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(connectionReceiver);
+    }
 
 
 
